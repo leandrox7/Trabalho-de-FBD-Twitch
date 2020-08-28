@@ -1,0 +1,6 @@
+-- instalar o EntityFramewor CLI
+dotnet tool install --global dotnet-ef
+
+
+Gera os Model de acordo com o banco de dados
+dotnet ef dbcontext scaffold "Server=localhost;User Id=leandro;Password=leandrox7;Database=Twitch" "Pomelo.EntityFrameworkCore.MySql" -o Models -c MyDbContext

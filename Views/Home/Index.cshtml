@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    CanalStreamer streamer = (CanalStreamer)ViewData["streamer"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div>
+    <h1>Streamer</h1>
+    <p> nome: @streamer.Nome</p>
+    <p> descrição: @streamer.Descricao</p>
+    <p> online?: @streamer.Online</p>
+    
+</div>
