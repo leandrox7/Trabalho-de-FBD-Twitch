@@ -29,9 +29,17 @@ group by nome_streamer;
     
     
 -- b. duas com subconsulta (isto é, não existe formulação equivalente simplesmente usando joins);
-	-- checar se o usuario assistiu alguma transmissao de um canal que lhe foi recomendado
-    
+
+	-- checar quais transmissoes o usuario NAO assistiu de um canal que lhe foi recomendado 
+    -- (para checar se as recomendações estão funcionando)
+select cod_canal, cod_usuario from canalstreamer
+natural join recomendacoes
+where (cod_canal,cod_usuario) not in
+	(select cod_streamer,cod_usuario from gravacao
+	 join participacao on (cod_transmissao = cod_gravacao));
+     
     -- checar quais usuarios moderaram as streams de um outro usuario
+    
     
 -- c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
 -- (isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)

@@ -38,11 +38,11 @@ INSERT INTO Categorias (nome) VALUES('CSGO');
 
 CREATE TABLE Recomendacoes (
     cod_usuario INTEGER NOT NULL,
-    id_canal INTEGER NOT NULL,
+    cod_canal INTEGER NOT NULL,
 	
-	PRIMARY KEY(cod_usuario, id_canal),
+	PRIMARY KEY(cod_usuario, cod_canal),
 	FOREIGN KEY(cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
-	FOREIGN KEY(id_canal) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
+	FOREIGN KEY(cod_canal) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Recomendacoes VALUES(1,2);
