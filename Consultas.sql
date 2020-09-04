@@ -32,8 +32,12 @@ group by nome_streamer;
 
 	-- checar quais transmissoes o usuario NAO assistiu de um canal que lhe foi recomendado 
     -- (para checar se as recomendações estão funcionando)
-select cod_canal, cod_usuario from canalstreamer
+select nome_streamer,nome as nome_espectador from canalstreamer
 natural join recomendacoes
+join
+	(select nome as nome_streamer, cod_usuario as cod_canal
+	from canalstreamer) as streamer
+using(cod_canal)
 where (cod_canal,cod_usuario) not in
 	(select cod_streamer,cod_usuario from gravacao
 	 join participacao on (cod_transmissao = cod_gravacao));
