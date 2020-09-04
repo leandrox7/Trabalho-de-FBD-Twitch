@@ -1,0 +1,43 @@
+-- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
+
+	-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
+create view InscritosDoCanal as (
+select cod_canal, cod_usuario as cod_inscrito, nome as nome_inscrito, nome_streamer, valor, tipo, meses, data_inicio, data_fim, total_meses
+from canalstreamer
+	natural join transacao
+    natural join inscritos
+join
+    (select cod_usuario as cod_canal, nome as nome_streamer
+	 from canalstreamer) as streamer 
+using (cod_canal)
+);
+-- Item2.b) 10 consultas mínimo 3 tabelas.
+
+-- a. duas group by. Uma delas deve incluir Having.
+
+	-- mostrar quem ainda não tem nenhuma recompensa reivindicada
+select nome, count(recebido) as itens_reivindicados  from canalstreamer
+natural join prime
+natural join recompensa
+group by cod_usuario
+having count(recebido) = 0;
+
+    -- contar quantos inscritos tem em cada canal
+select nome_streamer, count(cod_inscrito) as total_inscritos
+from inscritosdocanal
+group by nome_streamer;
+    
+    
+-- b. duas com subconsulta (isto é, não existe formulação equivalente simplesmente usando joins);
+	-- checar se o usuario assistiu alguma transmissao de um canal que lhe foi recomendado
+    
+    -- checar quais usuarios moderaram as streams de um outro usuario
+    
+-- c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
+-- (isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)
+	-- ver quais seguidores o usuario tem em comum com outro usuario
+    
+-- d. duas delas com visão 
+	-- checar quantos meses de inscricao nos canais inscritos
+    
+    -- (talvez) checar quantos inscritos sao prime e quantos sao normais
