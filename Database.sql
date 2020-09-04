@@ -226,8 +226,8 @@ select * from dadospagamento;
 select * from categorias;
 select * from categorizados;
 
-create view InscritosDoCanal as
-(select nome_streamer,nome as nome_inscrito
+create view InscritosDoCanal as (
+select nome_streamer,nome as nome_inscrito
 from canalstreamer
 	natural join transacao
     natural join inscritos
@@ -241,18 +241,27 @@ using (cod_canal)
 -- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
 			-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
 -- Item2.b) 10 consultas mínimo 3 tabelas.
-/*
-a. duas group by. Uma delas deve incluir Having.
-	-- contar quantas recompensas foram reivindicadas com having
+
+-- a. duas group by. Uma delas deve incluir Having.
+	-- contar quantas recompensas foram reivindicadas pelo usuario com having
+	-- mostrar quem ainda não tem nenhuma recompensa reivindicada
+    select nome, count(recebido) as itens_reivindicados  from canalstreamer
+	natural join prime
+	natural join recompensa
+	group by cod_usuario
+	having count(recebido) = 0
     -- contar quantas pessoas pegaram tal recompensa
     
-b. duas com subconsulta (isto é, não existe formulação equivalente simplesmente usando joins);
+-- b. duas com subconsulta (isto é, não existe formulação equivalente simplesmente usando joins);
 	-- checar se o usuario assistiu alguma transmissao de um canal que lhe foi recomendado
+    
     -- checar quais usuarios moderaram as streams de um outro usuario
-c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
-(isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)
+    
+-- c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
+-- (isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)
 	-- ver quais seguidores o usuario tem em comum com outro usuario
-d. duas delas com visão 
+    
+-- d. duas delas com visão 
 	-- checar quantos meses de inscricao nos canais inscritos
+    
     -- (talvez) checar quantos inscritos sao prime e quantos sao normais
-*/
