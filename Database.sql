@@ -6,7 +6,7 @@ CREATE TABLE CanalStreamer (
     online_ BOOLEAN,
     nome VARCHAR(20) NOT NULL,
     senha VARCHAR(20) NOT NULL,
-    id_usuario INTEGER NOT NULL PRIMARY KEY
+    cod_usuario INTEGER NOT NULL PRIMARY KEY
 );
 
 INSERT INTO CanalStreamer VALUES('Seja bem vindo ao canal do fulano',FALSE,'fulano','senha123',1);
@@ -20,7 +20,7 @@ CREATE TABLE DadosPagamento (
 	cod_usuario INTEGER NOT NULL,
     cpf INTEGER NOT NULL PRIMARY KEY,
 	
-	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO DadosPagamento VALUES('rua de tal',123456,519803214,1,321456789);
@@ -32,17 +32,17 @@ CREATE TABLE Categorias (
     nome VARCHAR(20) NOT NULL
 );
 
-INSERT INTO Categorias VALUES('League of Legends');
-INSERT INTO Categorias VALUES('Just Chatting');
-INSERT INTO Categorias VALUES('CSGO');
+INSERT INTO Categorias (nome) VALUES('League of Legends');
+INSERT INTO Categorias (nome) VALUES('Just Chatting');
+INSERT INTO Categorias (nome) VALUES('CSGO');
 
 CREATE TABLE Recomendacoes (
-    id_usuario INTEGER NOT NULL,
+    cod_usuario INTEGER NOT NULL,
     id_canal INTEGER NOT NULL,
 	
-	PRIMARY KEY(id_usuario, id_canal),
-	FOREIGN KEY(id_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE,
-	FOREIGN KEY(id_canal) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	PRIMARY KEY(cod_usuario, id_canal),
+	FOREIGN KEY(cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
+	FOREIGN KEY(id_canal) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Recomendacoes VALUES(1,2);
@@ -56,7 +56,7 @@ CREATE TABLE Gravacao (
     cod_transmissao INTEGER NOT NULL PRIMARY KEY, 
 	cod_streamer INTEGER NOT NULL,
 	
-	FOREIGN KEY (cod_streamer) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	FOREIGN KEY (cod_streamer) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Gravacao VALUES(10234,'00:42:00',1000,1,1);
@@ -71,8 +71,8 @@ CREATE TABLE Inscritos (
 	cod_canal INTEGER NOT NULL,
 	
 	PRIMARY KEY(cod_usuario, cod_canal),
-	FOREIGN KEY(cod_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE,
-	FOREIGN KEY(cod_canal) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	FOREIGN KEY(cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
+	FOREIGN KEY(cod_canal) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Inscritos VALUES('2020-07-11','2020-08-11',12,1,2);
@@ -87,8 +87,8 @@ CREATE TABLE Transacao (
 	cod_canal INTEGER NOT NULL,
 	
 	PRIMARY KEY (cod_usuario,cod_canal),
-	FOREIGN KEY(cod_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE,
-	FOREIGN KEY(cod_canal) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	FOREIGN KEY(cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
+	FOREIGN KEY(cod_canal) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Transacao VALUES(60,0,12,1,2);
@@ -100,7 +100,7 @@ CREATE TABLE Notificacao (
     id_notificacao INTEGER NOT NULL PRIMARY KEY,
 	cod_usuario INTEGER NOT NULL,
 	
-	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Notificacao VALUES('Alanzoka esta online!',1,2);
@@ -113,7 +113,7 @@ CREATE TABLE Prime (
     cod_amazon INTEGER NOT NULL PRIMARY KEY,
 	cod_usuario INTEGER NOT NULL,
 	
-	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (id_usuario)
+	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario)
 );
 
 INSERT INTO Prime VALUES('fulano@gmail.com','senha123',100,1);
@@ -126,9 +126,9 @@ CREATE TABLE Items (
     tipo INTEGER NOT NULL
 );
 
-INSERT INTO Items VALUES('Fragmento de skin League of Legends',1);
-INSERT INTO Items VALUES('Jogo de Estrategia',2);
-INSERT INTO Items VALUES('Jogo de Tiro',2);
+INSERT INTO Items (nome,tipo) VALUES('Fragmento de skin League of Legends',1);
+INSERT INTO Items (nome,tipo) VALUES('Jogo de Estrategia',2);
+INSERT INTO Items (nome,tipo) VALUES('Jogo de Tiro',2);
 
 CREATE TABLE Mensagem (
     conteudo VARCHAR(200),
@@ -136,7 +136,7 @@ CREATE TABLE Mensagem (
 	cod_usuario INTEGER NOT NULL,
 	id_mensagem INTEGER NOT NULL PRIMARY KEY,
 
-	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE,
+	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
 	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_transmissao) ON DELETE CASCADE
 );
 
@@ -149,8 +149,8 @@ CREATE TABLE Seguir (
     cod_seguidor INTEGER NOT NULL,
 	
 	PRIMARY KEY (cod_canal,cod_seguidor),
-	FOREIGN KEY (cod_canal) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE,
-	FOREIGN KEY (cod_seguidor) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
+	FOREIGN KEY (cod_canal) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
+	FOREIGN KEY (cod_seguidor) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
 );
 
 INSERT INTO Seguir VALUES(1,2);
@@ -166,7 +166,7 @@ CREATE TABLE Participacao (
     moderador BOOLEAN,
 	
 	PRIMARY KEY (data_participacao,cod_usuario,cod_gravacao),
-	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE,
+	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
 	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_transmissao) ON DELETE CASCADE
 );
 
@@ -201,7 +201,7 @@ CREATE TABLE Recompensa (
     cod_amazon INTEGER NOT NULL,
     recebido BOOLEAN,
 	
-	PRIMARY KEY (nome_item,cod_amazon),
+	PRIMARY KEY (cod_item,cod_amazon),
 	FOREIGN KEY (cod_amazon) REFERENCES Prime (cod_amazon),
     FOREIGN KEY (cod_item) REFERENCES Items (cod_item)
 );
@@ -225,6 +225,18 @@ select * from seguir;
 select * from dadospagamento;
 select * from categorias;
 select * from categorizados;
+
+create view InscritosDoCanal as
+(select nome_streamer,nome as nome_inscrito
+from canalstreamer
+	natural join transacao
+    natural join inscritos
+join
+    (select cod_usuario as cod_canal, nome as nome_streamer
+	 from canalstreamer) as streamer 
+using (cod_canal)
+);
+
 
 -- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
 			-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
