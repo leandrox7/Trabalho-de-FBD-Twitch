@@ -28,7 +28,8 @@ INSERT INTO DadosPagamento VALUES('vila de tal',123333,439993214,2,444456789);
 INSERT INTO DadosPagamento VALUES('avenida de tal',123321,319883214,3,123456789);
 
 CREATE TABLE Categorias (
-    nome VARCHAR(20) PRIMARY KEY
+	cod_categoria INTEGER NOT NULL PRIMARY KEY auto_increment,
+    nome VARCHAR(20) NOT NULL
 );
 
 INSERT INTO Categorias VALUES('League of Legends');
@@ -90,9 +91,9 @@ CREATE TABLE Transacao (
 	FOREIGN KEY(cod_canal) REFERENCES CanalStreamer (id_usuario) ON DELETE CASCADE
 );
 
-INSERT INTO Transacao VALUES(60,'0',12,1,2);
-INSERT INTO Transacao VALUES(25,'0',12,2,3);
-INSERT INTO Transacao VALUES(NULL,'1',1,1,3);
+INSERT INTO Transacao VALUES(60,0,12,1,2);
+INSERT INTO Transacao VALUES(25,0,12,2,3);
+INSERT INTO Transacao VALUES(NULL,1,1,1,3);
 
 CREATE TABLE Notificacao (
     mensagem VARCHAR(100),
@@ -120,8 +121,9 @@ INSERT INTO Prime VALUES('beltrano@gmail.com','senha123',200,2);
 INSERT INTO Prime VALUES('ciclano@gmail.com','senha123',300,3);
 
 CREATE TABLE Items (
-    nome VARCHAR(50) NOT NULL PRIMARY KEY,
-    tipo INTEGER
+	cod_item INTEGER NOT NULL PRIMARY KEY auto_increment,
+    nome VARCHAR(50) NOT NULL,
+    tipo INTEGER NOT NULL
 );
 
 INSERT INTO Items VALUES('Fragmento de skin League of Legends',1);
@@ -183,29 +185,30 @@ INSERT INTO Participacao VALUES('2020-02-14',3,3,TRUE);
 
 CREATE TABLE Categorizados (
     cod_gravacao INTEGER NOT NULL,
-    nome_categoria VARCHAR(50) NOT NULL,
+    cod_categoria INTEGER NOT NULL,
 	
-	PRIMARY KEY (cod_gravacao,nome_categoria),
+	PRIMARY KEY (cod_gravacao,cod_categoria),
 	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_transmissao) ON DELETE CASCADE,
-	FOREIGN KEY (nome_categoria) REFERENCES Categorias (nome) ON DELETE CASCADE
+	FOREIGN KEY (cod_categoria) REFERENCES Categorias (cod_categoria) ON DELETE CASCADE
 );
 
-INSERT INTO Categorizados VALUES(1,'League of Legends');
-INSERT INTO Categorizados VALUES(2,'CSGO');
-INSERT INTO Categorizados VALUES(3,'Just Chatting');
+INSERT INTO Categorizados VALUES(1,1);
+INSERT INTO Categorizados VALUES(2,2);
+INSERT INTO Categorizados VALUES(3,3);
 
 CREATE TABLE Recompensa (
-    nome_item VARCHAR(50) NOT NULL,
+    cod_item INTEGER NOT NULL,
     cod_amazon INTEGER NOT NULL,
     recebido BOOLEAN,
 	
 	PRIMARY KEY (nome_item,cod_amazon),
-	FOREIGN KEY (cod_amazon) REFERENCES Prime (cod_amazon)
+	FOREIGN KEY (cod_amazon) REFERENCES Prime (cod_amazon),
+    FOREIGN KEY (cod_item) REFERENCES Items (cod_item)
 );
 
-INSERT INTO Recompensa VALUES('Jogo de Tiro',100,TRUE);
-INSERT INTO Recompensa VALUES('Jogo de Tiro',200,FALSE);
-INSERT INTO Recompensa VALUES('Jogo de Estrategia',100,TRUE);
+INSERT INTO Recompensa VALUES(3,100,TRUE);
+INSERT INTO Recompensa VALUES(3,200,FALSE);
+INSERT INTO Recompensa VALUES(1,100,TRUE);
 
 
 select * from CanalStreamer;
@@ -213,3 +216,31 @@ select * from Gravacao;
 select * from Transacao;
 select * from Notificacao;
 select * from Participacao;
+select * from Recompensa;
+select * from Items;
+select * from Inscritos;
+select * from Prime;
+select * from mensagem;
+select * from seguir;
+select * from dadospagamento;
+select * from categorias;
+select * from categorizados;
+
+-- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
+			-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
+-- Item2.b) 10 consultas mínimo 3 tabelas.
+/*
+a. duas group by. Uma delas deve incluir Having.
+	-- contar quantas recompensas foram reivindicadas com having
+    -- contar quantas pessoas pegaram tal recompensa
+    
+b. duas com subconsulta (isto é, não existe formulação equivalente simplesmente usando joins);
+	-- checar se o usuario assistiu alguma transmissao de um canal que lhe foi recomendado
+    -- checar quais usuarios moderaram as streams de um outro usuario
+c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
+(isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)
+	-- ver quais seguidores o usuario tem em comum com outro usuario
+d. duas delas com visão 
+	-- checar quantos meses de inscricao nos canais inscritos
+    -- (talvez) checar quantos inscritos sao prime e quantos sao normais
+*/
