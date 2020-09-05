@@ -42,17 +42,25 @@ where (cod_canal,cod_usuario) not in
 	(select cod_streamer,cod_usuario from gravacao
 	 join participacao on (cod_transmissao = cod_gravacao));
      
-    
+	-- TODO subconsulta
     
 -- c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
 -- (isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)
+
 	-- ver quais seguidores o usuario tem em comum com outro usuario
     
 -- d. duas delas com visão 
+
 	-- checar quantos meses de inscricao nos canais inscritos
-    
-    -- (talvez) checar quantos inscritos sao prime e quantos sao normais
-    
+select nome_inscrito, nome_streamer, total_meses
+from inscritosdocanal;
+
+    -- checar quantos inscritos sao prime e quantos sao normais
+select nome_streamer, count(tipo)
+from inscritosdocanal
+where tipo = 1
+group by nome_streamer;
+
 -- restantes
 
 	-- checar quais usuarios moderaram as streams de um outro usuario
