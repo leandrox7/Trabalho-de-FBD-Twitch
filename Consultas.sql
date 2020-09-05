@@ -42,7 +42,6 @@ where (cod_canal,cod_usuario) not in
 	(select cod_streamer,cod_usuario from gravacao
 	 join participacao on (cod_transmissao = cod_gravacao));
      
-    -- checar quais usuarios moderaram as streams de um outro usuario
     
     
 -- c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
@@ -53,3 +52,17 @@ where (cod_canal,cod_usuario) not in
 	-- checar quantos meses de inscricao nos canais inscritos
     
     -- (talvez) checar quantos inscritos sao prime e quantos sao normais
+    
+-- restantes
+
+	-- checar quais usuarios moderaram as streams de um outro usuario
+select A.nome as nome_streamer, C.nome as nome_moderador
+from canalstreamer as A
+join 
+(select distinct cod_streamer, cod_usuario as cod_moderador
+from gravacao
+join participacao on (cod_transmissao = cod_gravacao)
+where moderador = true) as B
+on (a.cod_usuario = cod_streamer)
+join canalstreamer as C
+on (c.cod_usuario = cod_moderador);
