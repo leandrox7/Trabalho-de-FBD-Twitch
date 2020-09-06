@@ -11,7 +11,7 @@ namespace Twitch.Models
         public int CodUsuario { get; set; }
         public int CodCanal { get; set; }
 
-        public virtual CanalStreamer CodCanalNavigation { get; set; }
-        public virtual CanalStreamer CodUsuarioNavigation { get; set; }
+        public virtual Canalstreamer CodCanalNavigation { get; set; }
+        public virtual Canalstreamer CodUsuarioNavigation { get; set; }
     }
 }

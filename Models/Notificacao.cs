@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Twitch.Models
 {
-    public partial class Recomendacoes
+    public partial class Notificacao
     {
+        public string Mensagem { get; set; }
+        public int IdNotificacao { get; set; }
         public int CodUsuario { get; set; }
-        public int CodCanal { get; set; }
 
-        public virtual Canalstreamer CodCanalNavigation { get; set; }
         public virtual Canalstreamer CodUsuarioNavigation { get; set; }
     }
 }

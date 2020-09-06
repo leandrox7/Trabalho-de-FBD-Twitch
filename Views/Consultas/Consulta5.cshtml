@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Twitch.Models.Canalstreamer>
+
+
+
+
+@{
+    ViewData["Title"] = "Index";
+    List<Consulta5> listConsulta = (List<Consulta5>)ViewData["lista"];
+}
+
+<h1>Consulta 5</h1>
+
+<p>
+    -- ver quem segue todos os canais (ou mais) que o usuario 2 (cod_usuario = 2) segue
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                nome_streamer
+            </th>
+            
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Consulta5 con in listConsulta)
+        {
+            <tr>
+                <td>
+                    @con.Nome
+                </td>
+                
+
+
+            </tr>
+        }
+    </tbody>
+</table>

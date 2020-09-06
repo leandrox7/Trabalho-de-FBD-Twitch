@@ -3,4 +3,4 @@ dotnet tool install --global dotnet-ef
 
 
 Gera os Model de acordo com o banco de dados
-dotnet ef dbcontext scaffold "Server=localhost;User Id=leandro;Password=leandrox7;Database=Twitch" "Pomelo.EntityFrameworkCore.MySql" -o Models -c MyDbContext
+dotnet ef dbcontext scaffold "Server=localhost;User Id=root;Password=1234;Database=Twitch" "Pomelo.EntityFrameworkCore.MySql" -o Models -c MyDbContext

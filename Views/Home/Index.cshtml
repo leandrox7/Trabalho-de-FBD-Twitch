@@ -1,17 +1,34 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    CanalStreamer streamer = (CanalStreamer)ViewData["streamer"];
+    Canalstreamer streamer = (Canalstreamer)ViewData["streamer"];
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+   
 </div>
 
 <div>
-    <h1>Streamer</h1>
-    <p> nome: @streamer.Nome</p>
-    <p> descrição: @streamer.Descricao</p>
-    <p> online?: @streamer.Online</p>
-    
+   <h2>Principais Entidades</h2> 
+    <br />
+    <ul>
+        <li><a asp-controller="Canalstreamers" asp-action="Index">CanalStreamer</a></li>
+        <li><a>Categorias</a></li>
+        <li><a>Dados de Pagamento</a></li>
+        <li><a>Items</a></li>
+        <li><a>Mensagem</a></li>
+    </ul>
+</div>
+
+
+<div>
+    <h2>Consultas</h2>
+    <br />
+    <ul>
+        <li><a asp-controller="Consultas" asp-action="Consulta1">Usuários que ainda não reinvindicaram nenhuma recompensa</a></li>
+        <li><a asp-controller="Consultas" asp-action="Consulta2">contar quantos inscritos tem em cada canal</a></li>
+        <li><a asp-controller="Consultas" asp-action="Consulta3">checar quais canais o usuario NAO assistiu dos canais que lhe foram recomendados</a></li>
+        <li><a asp-controller="Consultas" asp-action="Consulta4">seleciona os streamers que fizeram lives na categoria CSGO e tiveram mais de 20000 no total de visualizacoes</a></li>
+        <li><a asp-controller="Consultas" asp-action="Consulta5">ver quem segue todos os canais (ou mais) que o usuario 2 (cod_usuario = 2) segue</a></li>
+    </ul>
 </div>

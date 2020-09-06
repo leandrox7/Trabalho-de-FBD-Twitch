@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Twitch.Models.Canalstreamer>
+
+
+
+
+@{
+    ViewData["Title"] = "Index";
+    List<Consulta4> listConsulta = (List<Consulta4>)ViewData["lista"];
+}
+
+<h1>Consulta 4</h1>
+
+<p>
+    -- seleciona os streamers que fizeram lives na categoria CSGO e tiveram mais de 20000 no total de visualizacoes
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                nome_streamer
+            </th>
+            <th>
+               Total de Visualizações
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Consulta4 con in listConsulta)
+        {
+            <tr>
+                <td>
+                    @con.Nome_streamer
+                </td>
+                <td>
+                    @con.Total_visualizacoes
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
