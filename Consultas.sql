@@ -76,7 +76,8 @@ from canalstreamer as A
 join 
 (select distinct cod_streamer, cod_usuario as cod_moderador
 from gravacao
-join participacao on (cod_transmissao = cod_gravacao)
+join participacao 
+using (cod_gravacao)
 where moderador = true) as B
 on (a.cod_usuario = cod_streamer)
 join canalstreamer as C
