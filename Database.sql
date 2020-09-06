@@ -53,7 +53,7 @@ CREATE TABLE Gravacao (
     total_visualizacoes INTEGER,
     duracao TIME,
     max_espectadores INTEGER,
-    cod_transmissao INTEGER NOT NULL PRIMARY KEY, 
+    cod_gravacao INTEGER NOT NULL PRIMARY KEY, 
 	cod_streamer INTEGER NOT NULL,
 	
 	FOREIGN KEY (cod_streamer) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE
@@ -137,7 +137,7 @@ CREATE TABLE Mensagem (
 	id_mensagem INTEGER NOT NULL PRIMARY KEY,
 
 	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
-	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_transmissao) ON DELETE CASCADE
+	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_gravacao) ON DELETE CASCADE
 );
 
 INSERT INTO Mensagem VALUES('boa tarde! como vai?',1,1,1);
@@ -167,7 +167,7 @@ CREATE TABLE Participacao (
 	
 	PRIMARY KEY (data_participacao,cod_usuario,cod_gravacao),
 	FOREIGN KEY (cod_usuario) REFERENCES CanalStreamer (cod_usuario) ON DELETE CASCADE,
-	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_transmissao) ON DELETE CASCADE
+	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_gravacao) ON DELETE CASCADE
 );
 
 INSERT INTO Participacao VALUES('2020-01-04',1,1,TRUE);
@@ -188,7 +188,7 @@ CREATE TABLE Categorizados (
     cod_categoria INTEGER NOT NULL,
 	
 	PRIMARY KEY (cod_gravacao,cod_categoria),
-	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_transmissao) ON DELETE CASCADE,
+	FOREIGN KEY (cod_gravacao) REFERENCES Gravacao (cod_gravacao) ON DELETE CASCADE,
 	FOREIGN KEY (cod_categoria) REFERENCES Categorias (cod_categoria) ON DELETE CASCADE
 );
 
@@ -209,6 +209,21 @@ CREATE TABLE Recompensa (
 INSERT INTO Recompensa VALUES(3,100,TRUE);
 INSERT INTO Recompensa VALUES(3,200,FALSE);
 INSERT INTO Recompensa VALUES(1,100,TRUE);
+
+
+-- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
+
+	-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
+create view InscritosDoCanal as (
+select cod_canal, cod_usuario as cod_inscrito, nome as nome_inscrito, nome_streamer, valor, tipo, meses, data_inicio, data_fim, total_meses
+from canalstreamer
+natural join transacao
+natural join inscritos
+join 
+	(select cod_usuario as cod_canal, nome as nome_streamer
+	 from canalstreamer) as streamer 
+using (cod_canal)
+);
 
 
 select * from CanalStreamer;

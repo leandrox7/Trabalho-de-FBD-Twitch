@@ -1,16 +1,3 @@
--- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
-
-	-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
-create view InscritosDoCanal as (
-select cod_canal, cod_usuario as cod_inscrito, nome as nome_inscrito, nome_streamer, valor, tipo, meses, data_inicio, data_fim, total_meses
-from canalstreamer
-	natural join transacao
-    natural join inscritos
-join
-    (select cod_usuario as cod_canal, nome as nome_streamer
-	 from canalstreamer) as streamer 
-using (cod_canal)
-);
 -- Item2.b) 10 consultas mínimo 3 tabelas.
 
 -- a. duas group by. Uma delas deve incluir Having.
@@ -32,22 +19,43 @@ group by nome_streamer;
 
 	-- checar quais transmissoes o usuario NAO assistiu de um canal que lhe foi recomendado 
     -- (para checar se as recomendações estão funcionando)
-select nome_streamer,nome as nome_espectador from canalstreamer
+select nome_streamer,nome as nome_espectador 
+from canalstreamer
 natural join recomendacoes
-join
-	(select nome as nome_streamer, cod_usuario as cod_canal
-	from canalstreamer) as streamer
+join (select nome as nome_streamer, cod_usuario as cod_canal
+	  from canalstreamer) as streamer
 using(cod_canal)
 where (cod_canal,cod_usuario) not in
-	(select cod_streamer,cod_usuario from gravacao
-	 join participacao on (cod_transmissao = cod_gravacao));
+	(select cod_streamer,cod_usuario 
+     from gravacao
+	 join participacao 
+     on (cod_transmissao = cod_gravacao));
      
-	-- TODO subconsulta
+	-- seleciona os streamers que fizeram lives na categoria CSGO e tiveram mais de 20000 no total de visualizacoes
+select nome as nome_streamer, total_visualizacoes
+from gravacao
+natural join categorizados
+join canalstreamer on (cod_streamer = cod_usuario)
+where total_visualizacoes > 20000 and
+	cod_categoria in (select cod_categoria
+					  from categorias
+                      where nome = 'CSGO');
     
 -- c. uma delas (diferente das consultas acima) NOT EXISTS para questões TODOS ou NENHUM que <referencia> 
 -- (isto é, não existe formulação equivalente usando simplemente joins ou subconsultas com (NOT) IN ou operadores relacionais)
 
-	-- ver quais seguidores o usuario tem em comum com outro usuario
+	-- ver quem segue todos os canais (ou mais) que o usuario 2 (cod_usuario = 2) segue
+select distinct nome
+from canalstreamer 
+join seguir as SEG on (cod_usuario = cod_seguidor)
+where cod_seguidor <> 2 and
+not exists (select cod_canal
+			from seguir
+            where cod_seguidor = 2 and
+            cod_canal not in
+						(select distinct cod_canal
+                         from seguir
+                         where cod_seguidor = SEG.cod_seguidor));
     
 -- d. duas delas com visão 
 
