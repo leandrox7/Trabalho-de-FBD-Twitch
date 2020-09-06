@@ -158,6 +158,7 @@ INSERT INTO Seguir VALUES(2,3);
 INSERT INTO Seguir VALUES(1,3);
 INSERT INTO Seguir VALUES(2,1);
 INSERT INTO Seguir VALUES(3,1);
+INSERT INTO Seguir VALUES(3,2);
 
 CREATE TABLE Participacao (
 	data_participacao DATE NOT NULL,
@@ -233,13 +234,14 @@ select * from Notificacao;
 select * from Participacao;
 select * from Recompensa;
 select * from Items;
-select * from Inscritos;
 select * from Prime;
 select * from mensagem;
-select * from seguir;
 select * from dadospagamento;
 select * from categorias;
 select * from categorizados;
+select * from Inscritos;
+select * from seguir;
+select * from inscritosdocanal;
 
 
 

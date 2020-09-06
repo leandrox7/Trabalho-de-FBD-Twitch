@@ -17,19 +17,18 @@ group by nome_streamer;
     
 -- b. duas com subconsulta (isto é, não existe formulação equivalente simplesmente usando joins);
 
-	-- checar quais transmissoes o usuario NAO assistiu de um canal que lhe foi recomendado 
-    -- (para checar se as recomendações estão funcionando)
+	-- checar quais canais o usuario NAO assistiu dos canais que lhe foram recomendados
+    -- (para checar se as recomendações estão sendo efetivas)
 select nome_streamer,nome as nome_espectador 
 from canalstreamer
 natural join recomendacoes
 join (select nome as nome_streamer, cod_usuario as cod_canal
 	  from canalstreamer) as streamer
-using(cod_canal)
+using (cod_canal)
 where (cod_canal,cod_usuario) not in
 	(select cod_streamer,cod_usuario 
      from gravacao
-	 join participacao 
-     on (cod_transmissao = cod_gravacao));
+	 natural join participacao);
      
 	-- seleciona os streamers que fizeram lives na categoria CSGO e tiveram mais de 20000 no total de visualizacoes
 select nome as nome_streamer, total_visualizacoes
@@ -63,7 +62,7 @@ not exists (select cod_canal
 select nome_inscrito, nome_streamer, total_meses
 from inscritosdocanal;
 
-    -- checar quantos inscritos sao prime e quantos sao normais
+    -- checar quantos inscritos sao do tipo prime
 select nome_streamer, count(tipo)
 from inscritosdocanal
 where tipo = 1
@@ -82,3 +81,19 @@ where moderador = true) as B
 on (a.cod_usuario = cod_streamer)
 join canalstreamer as C
 on (c.cod_usuario = cod_moderador);
+
+	-- listar qual usuario mandou cada mensagem de uma gravacao
+select nome as nome_espectador, conteudo, nome_streamer
+from mensagem
+natural join canalstreamer
+join (select cod_gravacao,nome as nome_streamer
+	  from canalstreamer
+      join gravacao on (cod_usuario = cod_streamer)) as B
+      on (mensagem.cod_gravacao = b.cod_gravacao)
+where mensagem.cod_gravacao = 1;
+
+	-- listar os canais (que tem inscritos), o total de seguidores e quantos deles sao inscritos
+select nome_streamer, count(distinct cod_seguidor) as total_seguidores, count(distinct cod_inscrito) as total_inscritos
+from seguir
+natural join inscritosdocanal
+group by (nome_streamer);
