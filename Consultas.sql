@@ -3,11 +3,11 @@
 -- a. duas group by. Uma delas deve incluir Having.
 
 	-- mostrar quem ainda não tem nenhuma recompensa reivindicada
-select nome, count(recebido) as itens_reivindicados  from canalstreamer
+select nome, sum(recebido) as itens_reivindicados  from canalstreamer
 natural join prime
 natural join recompensa
 group by cod_usuario
-having count(recebido) = 0;
+having sum(recebido) < 1;
 
     -- contar quantos inscritos tem em cada canal
 select nome_streamer, count(cod_inscrito) as total_inscritos
@@ -46,11 +46,12 @@ where total_visualizacoes > 20000 and
 	-- ver quem segue todos os canais (ou mais) que o usuario 2 (cod_usuario = 2) segue
 select distinct nome
 from canalstreamer 
-join seguir as SEG on (cod_usuario = cod_seguidor)
-where cod_seguidor <> 2 and
+join seguir as SEG 
+on (cod_usuario = cod_seguidor)
+where cod_seguidor <> 3 and
 not exists (select cod_canal
 			from seguir
-            where cod_seguidor = 2 and
+            where cod_seguidor = 3 and
             cod_canal not in
 						(select distinct cod_canal
                          from seguir
@@ -63,7 +64,7 @@ select nome_inscrito, nome_streamer, total_meses
 from inscritosdocanal;
 
     -- checar quantos inscritos sao do tipo prime
-select nome_streamer, count(tipo)
+select nome_streamer, count(tipo) as total_prime
 from inscritosdocanal
 where tipo = 1
 group by nome_streamer;

@@ -154,7 +154,6 @@ CREATE TABLE Seguir (
 );
 
 INSERT INTO Seguir VALUES(1,2);
-INSERT INTO Seguir VALUES(2,3);
 INSERT INTO Seguir VALUES(1,3);
 INSERT INTO Seguir VALUES(2,1);
 INSERT INTO Seguir VALUES(3,1);
@@ -210,6 +209,7 @@ CREATE TABLE Recompensa (
 INSERT INTO Recompensa VALUES(3,100,TRUE);
 INSERT INTO Recompensa VALUES(3,200,FALSE);
 INSERT INTO Recompensa VALUES(1,100,TRUE);
+INSERT INTO Recompensa VALUES(2,300,FALSE);
 
 
 -- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
