@@ -1,3 +1,17 @@
+-- Item2.a) Definir uma visão útil a seu universo de discurso, envolvendo no mínimo 3 tabelas.
+
+	-- juncao de usuario, transacao e inscritos (para saber quantos meses de inscricao, etc)
+create view InscritosDoCanal as (
+select cod_canal, cod_usuario as cod_inscrito, nome as nome_inscrito, nome_streamer, valor, tipo, meses, data_inicio, data_fim, total_meses
+from canalstreamer
+natural join transacao
+natural join inscritos
+join 
+	(select cod_usuario as cod_canal, nome as nome_streamer
+	 from canalstreamer) as streamer 
+using (cod_canal)
+);
+
 -- Item2.b) 10 consultas mínimo 3 tabelas.
 
 -- a. duas group by. Uma delas deve incluir Having.
